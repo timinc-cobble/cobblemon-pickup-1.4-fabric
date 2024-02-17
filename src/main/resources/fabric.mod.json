@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblemon-pickup",
+  "version": "1.4-fabric-1.0.0",
+  "name": "Cobblemon Pickup",
+  "description": "What if pickup worked?",
+  "authors": [
+    "TimInc aka Timothy Metcalfe"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "us.timinc.mc.cobblemon.pickup.CobblemonPickup"
+      }
+    ]
+  },
+  "depends": {
+    "java": ">=17",
+    "minecraft": ">=1.20.1",
+    "fabricloader": ">=0.14.21",
+    "fabric-language-kotlin": ">=1.9.3+kotlin.1.8.20",
+    "fabric": "*",
+    "cobblemon": ">=1.4.0"
+  }
+}
