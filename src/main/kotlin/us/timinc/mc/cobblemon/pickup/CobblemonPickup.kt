@@ -1,7 +1,10 @@
 package us.timinc.mc.cobblemon.pickup
 
+import com.cobblemon.mod.common.api.abilities.Ability
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import net.fabricmc.api.ModInitializer
+import net.minecraft.loot.LootDataKey
+import net.minecraft.loot.LootDataType
 import net.minecraft.loot.context.LootContextParameterSet
 import net.minecraft.loot.context.LootContextParameters
 import net.minecraft.server.world.ServerWorld
@@ -24,21 +27,14 @@ class CobblemonPickup : ModInitializer {
                 val position = winner.pokemonList.firstNotNullOf { it.entity }.blockPos
                 for (battlePokemon in winner.pokemonList) {
                     val pokemon = battlePokemon.effectedPokemon
-                    if (pokemon.ability.name != "pickup") {
-                        debug("${pokemon.getDisplayName().string} doesn't have pickup")
-                        continue
-                    }
                     if (!pokemon.heldItem().isEmpty) {
                         debug("${pokemon.getDisplayName().string} is already holding an item")
                         continue
                     }
-                    val roll = Random.nextDouble()
-                    if (roll > config.pickupChance) {
-                        debug("${pokemon.getDisplayName().string} rolled $roll and needed to roll under ${config.pickupChance}")
-                        continue
-                    }
 
-                    val lootTable = world.server!!.lootManager.getLootTable(PICKUP_LT)
+                    val identifier = Identifier("pickup", "gameplay/${pokemon.ability.name}")
+                    val lootManager = world.server!!.lootManager
+                    val lootTable = lootManager.getLootTable(identifier)
                     val list = lootTable.generateLoot(LootContextParameterSet(
                         world as ServerWorld,
                         mapOf(
@@ -47,6 +43,11 @@ class CobblemonPickup : ModInitializer {
                         mapOf(),
                         0F
                     ))
+
+                    if (list.isEmpty) {
+                        debug("Attempted to roll for ability ${pokemon.ability.name} but nothing dropped.")
+                        continue
+                    }
 
                     pokemon.swapHeldItem(list.first())
                 }

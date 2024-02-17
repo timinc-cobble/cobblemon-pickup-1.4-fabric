@@ -8,7 +8,6 @@ import java.io.PrintWriter
 
 class Config {
     val debug: Boolean = false
-    val pickupChance: Float = 0.1F
 
     class Builder {
         companion object {

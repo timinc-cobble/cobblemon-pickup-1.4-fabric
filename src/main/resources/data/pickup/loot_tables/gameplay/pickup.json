@@ -6,6 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "minecraft:air",
+          "weight": 900
+        },
+        {
+          "type": "minecraft:item",
           "weight": 30,
           "name": "cobblemon:super_potion"
         },
