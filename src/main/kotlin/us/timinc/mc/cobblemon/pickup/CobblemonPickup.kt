@@ -21,8 +21,8 @@ class CobblemonPickup : ModInitializer {
 
     override fun onInitialize() {
         CobblemonEvents.BATTLE_VICTORY.subscribe { evt ->
-            val world = evt.winners.firstNotNullOf { winner -> winner.pokemonList.firstNotNullOf { battlePokemon -> battlePokemon.entity?.world } }
-            if (world.server == null) return@subscribe
+            val world = evt.winners.flatMap { it.pokemonList }.firstNotNullOfOrNull { it.entity?.world }
+            if (world?.server == null) return@subscribe
             for (winner in evt.winners) {
                 val position = winner.pokemonList.firstNotNullOf { it.entity }.blockPos
                 for (battlePokemon in winner.pokemonList) {
