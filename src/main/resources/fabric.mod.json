@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "cobblemon-pickup",
-  "version": "1.4-fabric-1.1.0",
+  "version": "1.4-fabric-1.1.1",
   "name": "Cobblemon Pickup",
   "description": "What if pickup worked?",
   "authors": [
