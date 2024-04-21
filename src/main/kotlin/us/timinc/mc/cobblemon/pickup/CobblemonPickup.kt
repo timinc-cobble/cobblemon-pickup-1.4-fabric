@@ -9,6 +9,7 @@ import net.minecraft.loot.context.LootContextParameterSet
 import net.minecraft.loot.context.LootContextParameters
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Vec3d
 import us.timinc.mc.cobblemon.pickup.config.Config
 import kotlin.random.Random
 
@@ -25,8 +26,11 @@ class CobblemonPickup : ModInitializer {
             if (world?.server == null) return@subscribe
             for (winner in evt.winners) {
                 val position = winner.pokemonList.firstNotNullOf { it.entity }.blockPos
+                val vecPos = Vec3d(position.x.toDouble(), position.y.toDouble(), position.z.toDouble())
                 for (battlePokemon in winner.pokemonList) {
                     val pokemon = battlePokemon.effectedPokemon
+                    debug("Rolling for ${pokemon.ability.name} on ${pokemon.getDisplayName().string}")
+
                     if (!pokemon.heldItem().isEmpty) {
                         debug("${pokemon.getDisplayName().string} is already holding an item")
                         continue
@@ -38,7 +42,7 @@ class CobblemonPickup : ModInitializer {
                     val list = lootTable.generateLoot(LootContextParameterSet(
                         world as ServerWorld,
                         mapOf(
-                            LootContextParameters.ORIGIN to position
+                            LootContextParameters.ORIGIN to vecPos
                         ),
                         mapOf(),
                         0F
